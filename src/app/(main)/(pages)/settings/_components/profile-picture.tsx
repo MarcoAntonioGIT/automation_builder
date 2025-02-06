@@ -1,13 +1,17 @@
-import { div } from 'framer-motion/client'
 import React from 'react'
 import UploadCareButton from './uploadcare-button'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { X } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
-type Props = {}
+type Props = {
+  userImage: string | null
+  onDelete?: any
+  onUpload: any
+}
 
-const ProfilePicture = (props: Props) => {
+const ProfilePicture = ({ userImage, onDelete, onUpload }: Props) => {
   const router = useRouter()
   const onRemoveProfileImage = async () =>{
     const response = await onDelete()
@@ -15,6 +19,7 @@ const ProfilePicture = (props: Props) => {
       router.refresh()
     }
   }
+  
   return <div className='flex flex-col'>
     <p className='text-lg text-white'>Foto de Perfil</p>
     <div className='flex h-[30vh] flex-col items-center justify-center'>
@@ -35,7 +40,7 @@ const ProfilePicture = (props: Props) => {
           </Button>
         </>
       ) : (
-        <UploadCareButton/>
+        <UploadCareButton onUpload={onUpload}/>
       )}
     </div> 
   </div>

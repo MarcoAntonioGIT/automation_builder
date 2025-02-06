@@ -2,23 +2,44 @@ import ProfileForm from '@/components/forms/profile-form'
 import React from 'react'
 import ProfilePicture from './_components/profile-picture'
 import { db } from '@/lib/db'
+import { auth } from '@clerk/nextjs/server'
 
-type Props = {}
+export const removeProfileImage = async () => {
+  'use server'
 
-const Settings = (props: Props) => {
-  const removeProfileImage = async () => {
+  const { userId } = await auth() // 🔹 Aguarda a Promise resolver
+  if (!userId) return false
+
+  const response = await db.user.update({
+    where: { clerkId: userId },
+    data: { profileImage: '' }
+  })
+
+  return !!response
+}
+
+const Settings = async () => {
+  const { userId } = await auth() // 🔹 Aguarda a Promise resolver
+  if (!userId) return <p>Usuário não autenticado</p>
+
+  // Busca o usuário no banco de dados
+  const user = await db.user.findUnique({
+    where: { clerkId: userId }
+  })
+
+  // Função para atualizar a imagem de perfil
+  const uploadProfileImage = async (url: string) => {
     'use server'
+    
+    if (!userId) return false
+
     const response = await db.user.update({
-      where: {
-        clerkId: authUser.id,
-      },
-      data: {
-        profileImage: '',
-      }
+      where: { clerkId: userId },
+      data: { profileImage: url }
     })
-    return response
+
+    return !!response
   }
-  
 
   return (
     <div className='flex flex-col gap-4'>
@@ -28,21 +49,20 @@ const Settings = (props: Props) => {
       </h1>
       <div className='flex flex-col gap-10 p-6'>
         <div>
-        <h2 className='text-2xl font-bold'>Perfil</h2>
-        <p className='text-base text-white/50'>
-          Adicione ou atualize suas informações
-        </p>
-
+          <h2 className='text-2xl font-bold'>Perfil</h2>
+          <p className='text-base text-white/50'>
+            Adicione ou atualize suas informações
+          </p>
         </div>
       </div>
-      {/*
+      
       <ProfilePicture
         onDelete={removeProfileImage}
         userImage={user?.profileImage || ''}
         onUpload={uploadProfileImage}
-      ></ProfilePicture>
+      />
+
       <ProfileForm/>
-      */}
     </div>
   )
 }
