@@ -5,6 +5,7 @@ import Payment from "@/components/icons/payment"
 import Workflows from "@/components/icons/workflows"
 import Logs from "@/components/icons/clipboard"
 import Settings from "@/components/icons/settings"
+import type { Connection } from "./types"
 
 
 export const clients = [...new Array(10)].map((client, index) => ({
@@ -146,7 +147,7 @@ export const EditorCanvasDefaultCardTypes = {
     type: 'Action',
   },
 }
-/*
+
 export const CONNECTIONS: Connection[] = [
   {
     title: 'Google Drive',
@@ -179,4 +180,3 @@ export const CONNECTIONS: Connection[] = [
     slackSpecial: true,
   },
 ]
-*/

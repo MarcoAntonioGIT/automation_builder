@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
+import {
+  ClerkProvider,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from '@clerk/nextjs'
 import "./globals.css";
 import { ThemeProvider } from 'next-themes';
-import { ClerkProvider } from '@clerk/nextjs'
+import ModalProvider from "@/providers/modal-provider";
 
 const font = DM_Sans({ subsets: ['latin']})
 
@@ -27,11 +35,10 @@ export default function RootLayout({
             disableTransitionOnChange
             storageKey="theme"
           >
-            {children}
+            <ModalProvider>{children}</ModalProvider>
           </ThemeProvider>
-
         </body>
-      </html>
+      </html> 
     </ClerkProvider>
   );
 }

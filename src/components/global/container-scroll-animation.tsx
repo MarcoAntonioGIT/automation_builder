@@ -75,10 +75,12 @@ export const Card = ({
   rotate,
   scale,
   translate,
+  children,
 }: {
   rotate: any
   scale: any
   translate: any
+  children?: React.ReactNode
 }) => {
   return (
     <motion.div
